@@ -15,6 +15,7 @@ class ACTLayer(nn.Module):
         self.mixed_action = False
         self.multi_discrete = False
         self.continuous_action = False
+        self.action_type = action_space.__class__.__name__
 
         if action_space.__class__.__name__ == "Discrete":
             action_dim = action_space.n
@@ -164,7 +165,8 @@ class ACTLayer(nn.Module):
             dist_entropy = torch.tensor(dist_entropy).mean()
 
         else:
-            action_logits = self.action_out(x, available_actions)
+            # action_logits = self.action_out(x, available_actions)
+            action_logits = self.action_out(x)
             action_log_probs = action_logits.log_probs(action)
             if active_masks is not None:
                 if self.action_type == "Discrete":
@@ -174,7 +176,7 @@ class ACTLayer(nn.Module):
             else:
                 dist_entropy = action_logits.entropy().mean()
 
-        return action_log_probs
+        return action_log_probs, dist_entropy
 
     def evaluate_actions_trpo(self, x, action, available_actions=None, active_masks=None):
         """
@@ -215,7 +217,8 @@ class ACTLayer(nn.Module):
             dist_entropy = torch.tensor(dist_entropy).mean()
 
         else:
-            action_logits = self.action_out(x, available_actions)
+            # action_logits = self.action_out(x, available_actions)
+            action_logits = self.action_out(x)
             action_mu = action_logits.mean
             action_std = action_logits.stddev
             action_log_probs = action_logits.log_probs(action)

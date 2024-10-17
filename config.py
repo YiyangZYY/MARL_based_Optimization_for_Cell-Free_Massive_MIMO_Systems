@@ -166,7 +166,9 @@ def get_config():
     )
 
     # prepare parameters
-    parser.add_argument("--algorithm_name", type=str, default="happo", choices=["rmappo", "mappo","happo","hatrpo"])
+    # parser.add_argument("--algorithm_name", type=str, default="happo", choices=["rmappo", "mappo","happo","hatrpo"])
+    # TODO still has some bugs on the dimension of the HATRPO
+    parser.add_argument("--algorithm_name", type=str, default="happo", choices=["rmappo", "mappo","happo"])
 
     parser.add_argument(
         "--experiment_name",

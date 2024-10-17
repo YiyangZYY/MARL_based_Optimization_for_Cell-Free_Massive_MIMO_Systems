@@ -46,7 +46,7 @@ class HATRPO():
         self._use_policy_active_masks = args.use_policy_active_masks
 
         if self._use_popart:
-            self.value_normalizer = PopArt(self.hidden,1, device=self.device)
+            self.value_normalizer = PopArt(1, device=self.device)
         else:
             self.value_normalizer = None
 
